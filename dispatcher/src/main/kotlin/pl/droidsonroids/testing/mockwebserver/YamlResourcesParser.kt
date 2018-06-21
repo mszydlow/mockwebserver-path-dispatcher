@@ -7,11 +7,8 @@ import org.apache.commons.text.translate.LookupTranslator
 import org.yaml.snakeyaml.Yaml
   
 internal class YamlResourcesParser : ResourcesParser {
-    private val escaper = AggregateTranslator(
-        LookupTranslator(EntityArrays.JAVA_CTRL_CHARS_ESCAPE),
-        JavaUnicodeEscaper.outsideOf(32, 0x7f)
-    )
-      private val parser = Yaml()
+    private val escaper = JavaUnicodeEscaper.above(0xD800)
+    private val parser = Yaml()
   
       override fun parseFrom(fileName: String): Fixture {
           val path = "fixtures/$fileName.yaml"
